@@ -4,7 +4,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '',
+  password: 'root',
   database: 'express-mysql-crud',
 });
 
@@ -13,8 +13,7 @@ connection.connect(function (err) {
     console.error('error connecting : ' + err.stack);
     return;
   }
-
-  console.log('connected as id ' + connection.threadId);
+  console.log(connection.state);
 });
 
 module.exports = connection;
