@@ -54,12 +54,41 @@ posting.post(
           return res.status(200).json({
             status: true,
             message: 'Tambah data berhasil.',
-            data: rows,
           });
         }
       }
     );
   }
 );
+
+// get by id
+posting.get('/posting/(:id)', function (req, res) {
+  let id = req.params.id;
+
+  connection.query(
+    `SELECT * FROM posting WHERE id = ${id}`,
+    function (err, rows) {
+      if (err) {
+        return res.status(500).json({
+          status: false,
+          message: 'Internal Server Error',
+        });
+      }
+
+      if (rows.length <= 0) {
+        return res.status(404).json({
+          status: false,
+          message: 'Data tidak ditemukan!',
+        });
+      }
+
+      return res.status(200).json({
+        status: true,
+        message: 'Detail data posting',
+        data: rows[0],
+      });
+    }
+  );
+});
 
 module.exports = posting;
