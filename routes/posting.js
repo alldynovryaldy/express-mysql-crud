@@ -92,7 +92,7 @@ posting.get('/posting/:id', function (req, res) {
 });
 
 posting.patch(
-  '/posting/update/:id',
+  '/posting/:id',
   [body('title').notEmpty(), body('content').notEmpty()],
   function (req, res) {
     const errors = validationResult(req);
@@ -125,12 +125,29 @@ posting.patch(
         } else {
           return res.status(200).json({
             status: true,
-            message: 'Update Data Successfully!',
+            message: 'Berhasil memperbaharui data',
           });
         }
       }
     );
   }
 );
+
+posting.delete('/posting/:id', function (req, res) {
+  let id = req.params.id;
+  connection.query(`DELETE FROM posting WHERE id =${id}`, function (err, rows) {
+    if (err) {
+      return res.status(500).json({
+        status: false,
+        message: 'Internal Server Error',
+      });
+    } else {
+      return res.status(200).json({
+        status: true,
+        message: 'Berhasil menghapus data',
+      });
+    }
+  });
+});
 
 module.exports = posting;
