@@ -62,7 +62,7 @@ posting.post(
 );
 
 // get by id
-posting.get('/posting/(:id)', function (req, res) {
+posting.get('/posting/:id', function (req, res) {
   let id = req.params.id;
 
   connection.query(
@@ -90,5 +90,47 @@ posting.get('/posting/(:id)', function (req, res) {
     }
   );
 });
+
+posting.patch(
+  '/posting/update/:id',
+  [body('title').notEmpty(), body('content').notEmpty()],
+  function (req, res) {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        errors: errors.array(),
+      });
+    }
+
+    //id post
+    let id = req.params.id;
+
+    // define formData
+    let formData = {
+      title: req.body.title,
+      content: req.body.content,
+    };
+
+    // update query
+    connection.query(
+      `UPDATE posting SET ? WHERE id = ${id}`,
+      formData,
+      function (err, rows) {
+        if (err) {
+          return res.status(500).json({
+            status: false,
+            message: 'Internal Server Error',
+          });
+        } else {
+          return res.status(200).json({
+            status: true,
+            message: 'Update Data Successfully!',
+          });
+        }
+      }
+    );
+  }
+);
 
 module.exports = posting;
