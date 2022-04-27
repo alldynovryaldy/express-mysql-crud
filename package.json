@@ -5,13 +5,15 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./server.js"
+    "start": "node ./server.js",
+    "dev": "nodemon ./server.js"
   },
   "author": "Alldy Novryaldy",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-validator": "^6.14.0",
     "mysql": "^2.18.1",
