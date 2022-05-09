@@ -1,7 +1,7 @@
 const express = require('express');
 const posting = express.Router();
-const validator = require('../middleware/validator');
-const postingHandler = require('../handler/posting');
+const validator = require('../validator/validatorPosting');
+const postingHandler = require('../handler/postingHandler');
 
 posting.get('/posting', postingHandler.getPosting); // index
 posting.post('/posting', validator.posting, postingHandler.addPosting); // insert
