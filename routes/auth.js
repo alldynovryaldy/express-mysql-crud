@@ -4,6 +4,6 @@ const validatorAuth = require('../validator/validatorAuth');
 const authHandler = require('../handler/authHandler');
 
 auth.post('/register', validatorAuth.register, authHandler.register);
-// auth.post('/login', async (req, res) => {});
+auth.post('/login', validatorAuth.login, authHandler.login);
 
 module.exports = auth;

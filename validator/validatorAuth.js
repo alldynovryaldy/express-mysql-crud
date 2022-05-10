@@ -1,7 +1,5 @@
 const { body, check, validationResult } = require('express-validator');
 
-// const User
-
 exports.register = [
   check('name').not().notEmpty(), // name
   body('email')
@@ -13,7 +11,6 @@ exports.register = [
   body('passwordConfirmation')
     .notEmpty()
     .custom((value, { req }) => {
-      // console.log(req);
       if (value !== req.body.password) {
         throw new Error('Password confirmation does not match password');
       }
@@ -21,6 +18,18 @@ exports.register = [
       return true;
     }),
 
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
+exports.login = [
+  body('email').not().notEmpty(),
+  body('password').not().notEmpty(),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
