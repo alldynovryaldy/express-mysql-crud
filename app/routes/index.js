@@ -7,10 +7,7 @@ router.use('/api', [posting, auth]);
 
 // method ini akan di jalankan kapan pun
 router.use('/', function (req, res) {
-  res.status(404).json({
-    status: false,
-    message: 'Page Not Found',
-  });
+  res.send('Welcome to Web API with express, mysql')
 });
 
 module.exports = router;
