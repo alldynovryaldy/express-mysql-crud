@@ -1,4 +1,5 @@
 const db = require('../config/database')
+const db2 = require('../config/knex')
 
 exports.get = (req, res) => {
   db.query(

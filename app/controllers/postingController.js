@@ -1,4 +1,4 @@
-const postingModel = require('../model/postingModel')
+const postingModel = require('../models/postingModel')
 
 exports.getPosting = (req, res) => {
   postingModel.get(req, res)
