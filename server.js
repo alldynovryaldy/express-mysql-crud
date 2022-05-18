@@ -6,18 +6,15 @@ const routes = require('./app/routes');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const db = require('./app/models')
-db.sequelize.sync({
-  // force: true  // reset data database
-}).then(() => {
-  console.log("Drop and re-sync db.");
-});
+// import database connection
+const db = require('./app/config/database');
+db.sync(); //auto generate scheme
 
 app.use(
   cors(), // cors
   bodyParser.json(), // parse application/json
   bodyParser.urlencoded({
-    extended: false
+    extended: false,
   }), // parse application/x-www-form-urlencoded
   routes // use routes
 );

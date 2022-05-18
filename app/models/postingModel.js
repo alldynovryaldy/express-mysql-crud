@@ -1,12 +1,16 @@
-module.exports = (sequelize, Sequelize) => {
-  // name table = posting
-  return sequelize.define("posting", {
-    title: Sequelize.STRING,
-    content: {
-      type: Sequelize.STRING
-    },
-  }, {
+const { DataTypes } = require('sequelize');
+const db = require('../config/database');
+
+const Posting = db.define(
+  'posting', // table name generate
+  {
+    // Model attributes are defined here
+    title: DataTypes.STRING,
+    content: DataTypes.STRING,
+  },
+  {
     // custom nama table
-    freezeTableName: true
-  });
-};
+    freezeTableName: true,
+  }
+);
+module.exports = Posting;

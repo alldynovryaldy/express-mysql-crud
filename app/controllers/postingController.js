@@ -1,13 +1,11 @@
-const db = require('../models'); // connect with db
-const Posting = db.posting; // connect with model
-const operator = db.Sequelize.Op; // for operator query
+const Posting = require('../models/postingModel');
 
 // INSERT DATA
 exports.create = async (req, res) => {
   // form data
   const formData = {
-    ...req.body
-  }
+    ...req.body,
+  };
 
   try {
     // save data in database
@@ -17,34 +15,35 @@ exports.create = async (req, res) => {
       status: true,
       message: 'Create data success.',
       data: {
-        id: data.id
-      }
-    })
+        id: data.id,
+      },
+    });
   } catch (error) {
     return res.status(500).send({
       status: false,
-      message: error.message
-    })
+      message: error.message,
+    });
   }
 };
 
 // GET ALL DATA
 exports.getAll = (req, res) => {
   Posting.findAll({
-      order: [
-        ['id', 'DESC'], // will return `id` DESC
-      ]
-    })
+    order: [
+      ['id', 'DESC'], // will return `id` DESC
+    ],
+  })
     .then((result) => {
       return res.status(200).send({
         status: true,
-        data: result
-      })
-    }).catch((err) => {
+        data: result,
+      });
+    })
+    .catch((err) => {
       return res.status(500).send({
         status: false,
-        message: err.message || 'Server internal error'
-      })
+        message: err.message || 'Server internal error',
+      });
     });
 };
 
@@ -53,93 +52,88 @@ exports.getOne = async (req, res) => {
   try {
     // param id
     const id = req.params.id;
-    let data = await Posting.findByPk(id)
+    let data = await Posting.findByPk(id);
     if (data) {
       return res.status(200).send({
         status: true,
-        data: data
-      })
+        data: data,
+      });
     }
     return res.status(404).send({
       status: false,
-      message: '404: Data Not Found'
-    })
+      message: '404: Data Not Found',
+    });
   } catch (error) {
     return res.status(500).send({
       status: false,
-      message: error.message || 'Server Internal Error'
-    })
+      message: error.message || 'Server Internal Error',
+    });
   }
-
 };
 
 // UPDATE DATA
 exports.update = async (req, res) => {
   try {
     const id = req.params.id;
-    const checkData = await Posting.findByPk(id) // check data in database
+    const checkData = await Posting.findByPk(id); // check data in database
     if (checkData) {
       // update data
       await Posting.update(req.body, {
         where: {
-          id: id
-        }
-      })
+          id: id,
+        },
+      });
 
       return res.status(200).send({
         status: true,
         message: 'Update Success',
-      })
+      });
     } else {
       // if data not found
       return res.status(404).send({
         status: false,
-        message: 'Data Not Found'
-      })
+        message: 'Data Not Found',
+      });
     }
   } catch (error) {
     return res.status(500).send({
       status: false,
-      message: error.message || 'Server Internal Error'
-    })
-
+      message: error.message || 'Server Internal Error',
+    });
   }
   //
 };
 
 // DELETE DATA
 exports.delete = async (req, res) => {
-
   try {
     const id = req.params.id;
-    const checkData = await Posting.findByPk(id) // check data in database
+    const checkData = await Posting.findByPk(id); // check data in database
     console.log(checkData);
 
     if (checkData) {
-
       // delete data
       await Posting.destroy({
         where: {
-          id: id
-        }
-      })
+          id: id,
+        },
+      });
 
       res.status(200).send({
         status: true,
         message: 'Delete Success',
-      })
+      });
     }
 
     // if data not found
     res.status(404).send({
       status: false,
-      message: 'Data Not Found'
-    })
+      message: 'Data Not Found',
+    });
   } catch (error) {
     res.status(500).send({
       status: false,
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-
 };
