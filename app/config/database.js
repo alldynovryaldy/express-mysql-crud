@@ -1,19 +1,13 @@
-const mysql = require('mysql');
-
-// config database
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
-
-connection.connect(function (err) {
-  if (err) {
-    console.error('error connecting : ' + err.stack);
-    return;
-  }
-  console.log(connection.state);
-});
-
-module.exports = connection;
+module.exports = {
+  HOST: process.env.DB_HOST,
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASSWORD,
+  DB: process.env.DB_NAME,
+  dialect: "mysql",
+  // pool: {
+  //   max: 5,
+  //   min: 0,
+  //   acquire: 30000,
+  //   idle: 10000
+  // }
+};
