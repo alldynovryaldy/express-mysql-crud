@@ -8,7 +8,7 @@ const cors = require('cors');
 
 // import database connection
 const db = require('./app/config/database');
-db.sync(); //auto generate scheme
+db.sync({ force: true }); //auto generate scheme
 
 app.use(
   cors(), // cors
