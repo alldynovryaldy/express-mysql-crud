@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const db = require('../config/database');
-const User = require('../models/userModel');
 
 const Token = db.define(
   'token',
@@ -12,5 +11,4 @@ const Token = db.define(
   }
 );
 
-User.hasOne(Token);
 module.exports = Token;

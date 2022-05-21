@@ -4,14 +4,18 @@ const app = express();
 const port = process.env.PORT;
 const routes = require('./app/routes');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 // import database connection
 const db = require('./app/config/database');
-db.sync({ force: true }); //auto generate scheme
+db.sync({
+  force: false,
+}); //auto generate scheme
 
 app.use(
   cors(), // cors
+  cookieParser(), //
   bodyParser.json(), // parse application/json
   bodyParser.urlencoded({
     extended: false,

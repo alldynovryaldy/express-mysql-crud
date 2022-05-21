@@ -4,6 +4,19 @@ const jwt = require('jsonwebtoken');
 
 exports.getAll = async (req, res) => {
   try {
+    // example
+    // const test = await User.findOne({
+    //   attributes: ['name', 'email'],
+    //   include: [
+    //     {
+    //       model: Token,
+    //       attributes: ['token'],
+    //       where: {
+    //         token: token,
+    //       },
+    //     },
+    //   ],
+    // });
     const data = await User.findAll();
     return res.status(200).send({
       status: true,

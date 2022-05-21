@@ -26,25 +26,67 @@ exports.login = async (req, res) => {
       email: getUser.email,
     };
 
-    const creatToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET);
-
-    await Token.create({
-      userId: getUser.id,
-      token: creatToken,
+    const checkToken = await Token.findOne({
+      where: {
+        userId: getUser.id,
+      },
     });
 
-    return res.status(201).send({
-      status: true,
-      message: 'Register Succes',
-      data: getUser,
-      token: creatToken,
+    // jika token suda ada
+    if (!checkToken) {
+      const creatToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET);
+
+      res.cookie('authcookie', creatToken, {
+        httpOnly: false,
+        maxAge: 2592000,
+      });
+
+      Token.create({
+        userId: getUser.id,
+        token: creatToken,
+      });
+
+      return res.status(201).send({
+        status: true,
+        message: 'Login Success',
+        data: getUser,
+        token: creatToken,
+      });
+    }
+
+    return res.status(401).send({
+      status: false,
+      message: 'Access denied',
     });
   } catch (error) {
     return res.status(500).send({
       status: false,
-      message: error,
+      message: error.message,
     });
   }
+};
+
+exports.logout = async (req, res) => {
+  const token = req.cookies.authcookie; // get cookie token
+
+  if (!token) {
+    return res.status(404).send({
+      status: false,
+      message: 'Token tidak valid',
+    });
+  }
+
+  Token.destroy({
+    where: {
+      token: token,
+    },
+  });
+
+  res.clearCookie('authcookie');
+  return res.status(200).send({
+    status: true,
+    message: 'Logout Berhasil',
+  });
 };
 
 // const login1 = (req, res) => {
